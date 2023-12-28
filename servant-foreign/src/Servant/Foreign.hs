@@ -24,7 +24,6 @@ module Servant.Foreign
   , HeaderArg(..)
   , Arg(..)
   , FunctionName(..)
-  , ReqBodyContentType(..)
   , PathSegment(..)
     -- * Lenses
   , argName
@@ -34,7 +33,7 @@ module Servant.Foreign
   , reqMethod
   , reqHeaders
   , reqBody
-  , reqBodyContentType
+  , reqBodyContentTypes
   , reqReturnType
   , reqFuncName
   , path

@@ -54,6 +54,7 @@ library
       base-compat >= 0.10.5  && < 0.14
     , lens        >= 4.17    && < 5.3
     , http-types  >= 0.12.2  && < 0.13
+    , http-media
 
   hs-source-dirs:      src
   default-language:    Haskell2010
