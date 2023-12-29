@@ -36,6 +36,8 @@ module Servant.Foreign
   , reqBodyContentTypes
   , reqReturnType
   , reqFuncName
+  , reqDescription
+  , reqSummary
   , path
   , queryStr
   , queryArgName

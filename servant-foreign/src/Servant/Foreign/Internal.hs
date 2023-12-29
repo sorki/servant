@@ -204,13 +204,26 @@ data Req ftype = Req
   -- ^ The URL segments rendered in a way that they can be easily concatenated into a canonical function name
   , _reqBodyContentTypes :: [MediaType]
   -- ^ The content type the request body is transferred as.
+  , _reqSummary :: Text
+  , _reqDescription :: Text
   }
   deriving (Eq, Show, Typeable)
 
 makeLenses ''Req
 
 defReq :: Req ftype
-defReq = Req defUrl "GET" [] Nothing Nothing (FunctionName []) mempty
+defReq =
+  Req
+    { _reqUrl = defUrl
+    , _reqMethod = "GET"
+    , _reqHeaders = mempty
+    , _reqBody = Nothing
+    , _reqReturnType = Nothing
+    , _reqFuncName = FunctionName mempty
+    , _reqBodyContentTypes = mempty
+    , _reqSummary = mempty
+    , _reqDescription = mempty
+    }
 
 -- | 'HasForeignType' maps Haskell types with types in the target
 -- language of your backend. For example, let's say you're
@@ -487,19 +500,22 @@ instance HasForeign lang ftype api
   foreignFor lang ftype Proxy req =
     foreignFor lang ftype (Proxy :: Proxy api) req
 
-instance HasForeign lang ftype api
+instance (KnownSymbol desc, HasForeign lang ftype api)
   => HasForeign lang ftype (Summary desc :> api) where
   type Foreign ftype (Summary desc :> api) = Foreign ftype api
 
   foreignFor lang ftype Proxy req =
-    foreignFor lang ftype (Proxy :: Proxy api) req
+    foreignFor lang ftype (Proxy :: Proxy api)
+    $ req & reqSummary .~ (pack . symbolVal $ (Proxy :: Proxy desc))
 
-instance HasForeign lang ftype api
+
+instance (KnownSymbol desc, HasForeign lang ftype api)
   => HasForeign lang ftype (Description desc :> api) where
   type Foreign ftype (Description desc :> api) = Foreign ftype api
 
   foreignFor lang ftype Proxy req =
-    foreignFor lang ftype (Proxy :: Proxy api) req
+    foreignFor lang ftype (Proxy :: Proxy api)
+    $ req & reqDescription .~ (pack . symbolVal $ (Proxy :: Proxy desc))
 
 instance HasForeign lang ftype (ToServantApi r) => HasForeign lang ftype (NamedRoutes r) where
   type Foreign ftype (NamedRoutes r) = Foreign ftype (ToServantApi r)
