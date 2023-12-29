@@ -206,6 +206,7 @@ data Req ftype = Req
   -- ^ The content type the request body is transferred as.
   , _reqSummary :: Text
   , _reqDescription :: Text
+  , _reqTag :: Text
   }
   deriving (Eq, Show, Typeable)
 
@@ -223,6 +224,7 @@ defReq =
     , _reqBodyContentTypes = mempty
     , _reqSummary = mempty
     , _reqDescription = mempty
+    , _reqTag = mempty
     }
 
 -- | 'HasForeignType' maps Haskell types with types in the target

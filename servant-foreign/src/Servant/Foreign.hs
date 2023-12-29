@@ -38,6 +38,7 @@ module Servant.Foreign
   , reqFuncName
   , reqDescription
   , reqSummary
+  , reqTag
   , path
   , queryStr
   , queryArgName
